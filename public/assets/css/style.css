@@ -4115,7 +4115,7 @@ table tr:hover .table-links {
 }
 
 .nav-pills .nav-item .nav-link {
-    color: #6777ef;
+    color: #000000;
     padding-left: 15px !important;
     padding-right: 15px !important
 }
@@ -4204,7 +4204,7 @@ table tr:hover .table-links {
 }
 
 .badge.badge-primary {
-    background-color: #6777ef
+    background-color: #dc3545
 }
 
 .badge.badge-secondary {
@@ -5984,18 +5984,6 @@ blockquote .blockquote-footer {
     font-size: 13px
 }
 
-#visitorMap {
-    height: 400px
-}
-
-#visitorMap2,
-#visitorMap3 {
-    height: 350px
-}
-
-#visitorMap4 {
-    height: 190px
-}
 
 .sidebar-gone-show {
     display: none !important
@@ -6036,11 +6024,7 @@ pre {
     pointer-events: none
 }
 
-.contact-map {
-    width: 100%;
-    height: 100%;
-    min-height: 400px
-}
+
 
 .shadow-primary {
     box-shadow: 0 2px 6px #acb5f6
@@ -10664,7 +10648,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 
 .theme-white .nav-pills .nav-link.active {
     color: #fff;
-    background-color: #6777ef
+    background-color: #212529;
 }
 
 .theme-white .nav-pills .show>.nav-link {

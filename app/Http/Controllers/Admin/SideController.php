@@ -42,7 +42,7 @@ class SideController extends Controller
 
             $side = Side::create(([
                 'side_name' => $request['side_name'],
-                'side_image' => $request->side_image->move(public_path('images'), $imageName),
+                'side_image' => $imageName,
             ]));
             for ($i = 0; $i < count($request->name); $i++) {
                 $name[] = $request->name[$i];
@@ -56,6 +56,21 @@ class SideController extends Controller
             return redirect()->route('side')->with(['success' => 'تم حفظ الجهة']);
         } catch (\Exception $ex) {
             return redirect()->route('side')->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+    public function Qstore(Request $request)
+    {
+        //
+        //$imageName = time().'.'.$request->side_image->extension();
+        try {
+
+            $side = Side::create(([
+                'side_name' => $request['side_name'],
+                //'side_image' => $imageName,
+            ]));
+            return redirect()->back()->with(['success' => 'تم حفظ الجهة']);
+        } catch (\Exception $ex) {
+            return redirect()->back()->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
         }
     }
 

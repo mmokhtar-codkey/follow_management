@@ -41,7 +41,7 @@
             display: none;
         } */
         #side {
-            display: none;
+             display: none;
         }
 
 
@@ -96,6 +96,7 @@
                                         <div class="card card-secondary" id="div1">
                                             <div class="card-body">
                                                 <div class="form-row">
+
                                                     <div class="form-group col-md-6">
                                                         <label>رقم الوارد</label>
                                                         <select class="form-control select2" id="project" name="topic_id"
@@ -130,7 +131,7 @@
                                                             @endisset
                                                         </select>
                                                     </div>
-                                                    <div class="form-group col-md-12">
+                                                    {{-- <div class="form-group col-md-12">
                                                         <label> الإدارة المسؤلة </label>
                                                         <select class="form-control select2" multiple disabled
                                                             style="width: 100%;" name="responsible_id[]">
@@ -138,7 +139,7 @@
                                                                 @if ($topics && $topics->count() > 0)
                                                                     @foreach ($topics as $value)
                                                                         @foreach ($value->rsename as $values)
-                                                                            <option value="{{ $values->id }}" selected>
+                                                                            <option value="{{ $values->id }}">
                                                                                 {{ $values->name }}
                                                                             </option>
                                                                         @endforeach
@@ -146,26 +147,29 @@
                                                                 @endif
                                                             @endisset
                                                         </select>
-                                                    </div>
-                                                    <div class="form-group col-md-12">
+                                                    </div> --}}
+                                                    {{-- <div class="form-group col-md-12">
                                                         <label>عنوان الملف الصادر</label>
                                                         @isset($topics)
                                                             @if ($topics && $topics->count() > 0)
                                                                 @foreach ($topics as $topic)
-                                                                    <textarea name="name" cols="10" rows="2" value="{{ $topic->name }}"
-                                                                        class="option license-{{ $topic->id }} form-control" id="tittle">{{ $topic->name }}</textarea>
-                                                                    <textarea name="name" cols="10" rows="2" value="{{ $topic->name }}"
-                                                                        class="option license-{{ $topic->id }} form-control" hidden>{{ $topic->name }}</textarea>
+                                                                    <input name="name" cols="10" rows="2" value="{{ $topic->name }}"
+                                                                        class="option license-{{ $topic->id }} form-control" id="tittle" />{{ $topic->name }}
                                                                 @endforeach
                                                             @endif
                                                         @endisset
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card card-secondary">
                                             <div class="card-body" id="work_side">
                                                 <div class="form-row">
+                                                    <div class="form-group col-md-12" id="div7">
+                                                        <label> عنوان الصادر </label>
+                                                        <input style="height: calc(2.25rem + 6px);" type="text" multiple
+                                                            name="name" class="form-control">
+                                                    </div>
                                                     <div class="form-group col-md-6">
                                                         <input class="user-name text-bold-700 float-left" type="hidden"
                                                             name="cat_name" value="{{ Auth::user()->cat_name }}">

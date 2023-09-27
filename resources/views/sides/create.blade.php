@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="card card-secondary" >
                                         <div class="card-body " id="work_experience">
-                                            <div class="form-row">
+                                            <div class="form-row ">
                                                 <div class="form-group col-md-6">
                                                     <label> اسم الجهة </label>
                                                     <input style="height: calc(2.25rem + 6px);" type="text"
@@ -62,7 +62,7 @@
                                                 <div class="form-group col-md-6">
                                                     <label> صورة الجهة </label>
                                                     <input style="height: calc(2.25rem + 6px);" type="file"
-                                                        name="side_image" accept="image/*" class="form-control">
+                                                        name="side_image" accept="image/*" class="form-control" required>
                                                 </div>
                                             </div>
                                             <div class="form-row work-xp" >
@@ -75,7 +75,6 @@
                                                     <a href="javascript:void(0)" style="width:50px; height: 35px;"
                                                     id="addWork-btn" class="btn btn-primary"
                                                     onclick="addWorkRow()"> + </a>
-
                                                 </div>
                                             </div>
 

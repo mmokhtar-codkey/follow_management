@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 
@@ -170,11 +170,15 @@
                                         <h4 class="card-title"> عدد الوارد </h4>
                                         <span class="text-nowrap"> اجمالي الملفات الواردة </span>
                                         <span
-                                            style="color: black;font-size: 16px;font-weight: 800;padding: 40px;">{{ $topics->count() }}</span>
+                                            style="color: black;font-size: 16px;font-weight: 800;padding: 40px;">
+
+                                            {{ $topics->count() }}
+
+                                        </span>
                                         <div class="progress mt-1 mb-1" data-height="8">
                                             @if ($topics->count() && $topics->where('state', 1)->count() != 0)
                                                 <div class="progress-bar l-bg-green" role="progressbar"
-                                                    data-width="{{ ($topics->where('state', 1)->count() / $topics->count()) * 100 }}%"
+                                                    data-width="{{ ($topics->count() / $topics->where('state', 1)->count()) * 100 }}%"
                                                     aria-valuenow="{{ $topics->count() }}"
                                                     aria-valuemin="{{ $topics->count() }}"
                                                     aria-valuemax="{{ $topics->count() }}"></div>
@@ -277,24 +281,24 @@
                                                     style="font-size: 16px; font-weight: 700; color: black;padding-right: 90px;">
                                                     رئاسة مجلس النواب</label>
                                                 <div id="chart12"></div>
-                                                <input type="hidden" name="data4"
-                                                    value="{{ $orderCharts['data4'] }}">
+                                                <input type="hidden" name="data6"
+                                                    value="{{ $orderCharts['data6'] }}">
                                             </div>
                                             <div class="recent-report__chart">
                                                 <label for="chart10"
                                                     style="font-size: 16px; font-weight: 700; color: black;padding-right: 90px;">
                                                     هيئات - شركات</label>
                                                 <div id="chart13"></div>
-                                                <input type="hidden" name="data5"
-                                                    value="{{ $orderCharts['data5'] }}">
+                                                <input type="hidden" name="data4"
+                                                    value="{{ $orderCharts['data4'] }}">
                                             </div>
                                             <div class="recent-report__chart">
                                                 <label for="chart11"
                                                     style="font-size: 16px; font-weight: 700; color: black;padding-right: 90px;">
                                                     جهات أخري </label>
                                                 <div id="chart14"></div>
-                                                <input type="hidden" name="data6"
-                                                    value="{{ $orderCharts['data6'] }}">
+                                                <input type="hidden" name="data5"
+                                                    value="{{ $orderCharts['data5'] }}">
                                             </div>
                                         </div>
                                     </div>
@@ -311,7 +315,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-sm-12 col-lg-8">
+                        <div class="col-12 col-sm-12 col-lg-12">
                             <div class="card  card-primary">
                                 <div class="card-header">
                                     <h4>  احصائيات سنوية للمكاتبات </h4>
@@ -330,42 +334,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card card-danger">
-                                <div class="card-header">
-                                    <h4>الجهات</h4>
-                                    <div class="card-header-action">
-                                        <a href="{{ route('side') }}" class="btn btn-danger btn-icon icon-right"> عرض
-                                            الكل <i class="fas fa-chevron-left"></i></a>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="owl-carousel owl-theme" id="users-carousel">
-                                        @foreach ($sides as $side)
-                                            <div>
-                                                <div class="user-item">
-                                                    <a href="{{ route('side.profile', $side->id) }}"> <img
-                                                            alt="image" src="{{ URL::to('images/'. $side->side_image ) }}"
-                                                            class="img-fluid" style="width:100%;display:inline-block">
-                                                    </a>
-
-                                                    <div class="user-details">
-                                                        <div class="user-name"> {{ $side->side_name }} </div>
-
-                                                        <div class="user-cta">
-                                                            {{-- <button class="btn btn-primary">{{ $side->side_name }}</button> --}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
+                            
+                            
                         </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="card  card-danger">
                                     <div class="card-header">
-                                        <h4> المكاتبات  لم يتم الرد</h4>
+                                        <h4> متابعة المكاتبات  </h4>
                                     </div>
                                     <div style="padding-top: 15px;padding-bottom: 15px;direction:rtl">
                                         <div class="table-responsive">
@@ -374,6 +349,7 @@
                                                     <tr>
 
                                                         <th> رقم المكاتبة </th>
+                                                        <th> تاريخ المكاتبة </th>
                                                         <th> الحالة </th>
                                                         <th>مدة التأخير</th>
                                                     </tr>
@@ -381,15 +357,12 @@
                                                 <tbody>
                                                     @isset($topics)
                                                         @foreach ($topics as $Topic)
+                                                        @if ($Topic->state == 0 || $Topic->state == 2)
                                                             <tr>
-                                                                <td class="text-bold-700">
-                                                                    <a href="{{ route('topics.show', $Topic->id) }}">{{ $Topic->import_id }}</a></td>
+                                                                <td class="text-bold-700"><a href="{{ route('topics.show', $Topic->id) }}">{{ $Topic->import_id }}</a></td>
+                                                                <td class="text-bold-700"><a href="{{ route('topics.show', $Topic->id) }}">{{ $Topic->recived_date->format('Y-m-d') }}</a></td>
                                                                 <td>
-                                                                    @if ($Topic->state == 1)
-                                                                    <div class="spinner-grow text-success" role="status">
-                                                                        <span class="visually-hidden" style="color: #000">   </span>
-                                                                      </div>
-                                                                    @elseif($Topic->state == 0)
+                                                                    @if($Topic->state == 0)
                                                                     <div class="spinner-grow text-danger" role="status">
                                                                         <span class="visually-hidden" style="color: #000">    </span>
                                                                       </div>
@@ -400,13 +373,35 @@
                                                                     @endif
                                                                 </td>
                                                                 <td class="text-bold-700">
+                                                                    <p style="display: none;">{{ $delaiy = $Topic->recived_date->diffInDays($now) }}</p>
+                                                                    @if ($Topic->state == 0)
                                                                     <button type="button" class="btn btn-danger date">
-                                                                    <span class="badge badge-transparent" >
-                                                                     {{ $Topic->import_date->diffInDays($Topic->recived_date) }}
-                                                                    </span>يوم
+                                                                        @if($delaiy<365)
+                                                                            <span class="badge badge-transparent" >
+                                                                            {{$Topic->recived_date->diffInDays($now) }}
+                                                                            </span>يوم
+                                                                            @elseif($delaiy>=365)
+                                                                            <span class="badge badge-transparent" >
+                                                                                {{$Topic->recived_date->diffInYears($now) }}
+                                                                                </span>سنة
+                                                                        @endif
                                                                     </button>
+                                                                    @elseif($Topic->state == 2)
+                                                                    <button type="button" class="btn btn-warning date">
+                                                                        @if($delaiy<365)
+                                                                            <span class="badge badge-transparent" >
+                                                                            {{$Topic->recived_date->diffInDays($now) }}
+                                                                            </span>يوم
+                                                                            @elseif($delaiy>=365)
+                                                                            <span class="badge badge-transparent" >
+                                                                                {{$Topic->recived_date->diffInYears($now) }}
+                                                                                </span>سنة
+                                                                        @endif
+                                                                    </button>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
+                                                            @endif
                                                         @endforeach
                                                     @endisset
                                                 </tbody>
@@ -427,17 +422,14 @@
     <script src="assets/bundles/datatables/datatables.min.js"></script>
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <!-- JS Libraies -->
-    <!-- Page Specific JS File -->
-    <script src="assets/js/page/widget-data.js"></script>
+
     <!-- Template JS File -->
     <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
     <!-- Page Specific JS File -->
     <script src="assets/js/page/chart-apexcharts.js"></script>
     <script src="assets/js/page/datatables.js"></script>
     <!-- Template JS File -->
-    <script src="assets/bundles/chartjs/chart.min.js"></script>
     <!-- Page Specific JS File -->
-    <script src="assets/js/page/chart-chartjs.js"></script>
     <script src="assets/js/scripts.js"></script>
     <!-- Custom JS File -->
     <script src="assets/js/custom.js"></script>
