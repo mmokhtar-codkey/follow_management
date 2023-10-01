@@ -47,28 +47,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="section-body">
-                                    {{-- <div class="row">
-                                        <div class="col-12">
-                                            <div class="card mb-0">
-                                                <div class="card-body">
-                                                    <ul class="nav nav-pills">
-                                                        @isset($cat_note)
-                                                            @foreach ($cat_note as $cat)
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#"
-                                                                        style="font-size: 20px;font-weight: 600;">
-                                                                        {{ $cat->name }} <span
-                                                                            class="badge badge-primary">3</span></a>
-                                                                </li>
-                                                            @endforeach
-                                                        @endisset
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                </div>
+
                                 <div class="card card-secondary mt-4">
                                     <div class="card-header">
 

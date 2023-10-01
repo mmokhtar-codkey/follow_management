@@ -11,29 +11,51 @@
                     <div class="card-header">
                         <h4> تعليمات سيادة المحافظ </h4>
                     </div>
-                    <div class="card-body" style="direction: rtl">
-                        <form action="">
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label> تعليمات معالي الوزير / المحافظ</label>
-                                    <select class="form-control select2" id="project" name="responsible_export_id"
-                                        style="width: 100%;">
-                                        <option value="" disabled selected> اختر من التعليمات
-                                        </option>
-                                        <option value=""> تصديق </option>
-                                        <option value=""> إرسال للجهات الخرجية </option>
-                                        <option value=""> إعتذار </option>
-                                    </select>
+                    @if (auth()->user()->hasRole('vice'))
+                        <div class="card-body" style="direction: rtl">
+                            <form class="needs-validation" action="{{ route('vicecommnt_nation.create') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-row">
+                                    <input type="text" value="{{ $nation->id }}" name="nation_id" hidden>
+                                    <div class="form-group col-md-12">
+                                        <label> تعليمات معالي الوزير / المحافظ</label>
+                                        <select class="form-control select2" id="project" name="comment"
+                                            style="width: 100%;">
+                                            <option value="" disabled selected> اختر من التعليمات
+                                            </option>
+                                            <option value="تصديق"> تصديق </option>
+                                            <option value="إرسال للجهات الخرجية "> إرسال للجهات الخرجية </option>
+                                            <option value="إعتذار "> إعتذار </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label> تعليمات اخري </label>
+                                        <textarea name="other" cols="3" rows="3" class="form-control"></textarea>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <label> تعليمات اخري </label>
-                                    <textarea name="" cols="3" rows="3" class="form-control"></textarea>
-                                </div>
-
-                            </div>
-                            <button type="submit" class="btn btn-primary" style="float: right;">حفظ</button>
-                        </form>
-                    </div>
+                                <button type="submit" class="btn btn-primary" style="float: right;">حفظ</button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="card-body" style="direction: rtl">
+                            @isset($vice_comment)
+                                @foreach ($vice_comment as $comment)
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label> تعليمات معالي الوزير / المحافظ</label>
+                                            <input style="height: calc(2.25rem + 6px);" type="text"
+                                                value="{{ $comment->comment }}" class="form-control" disabled />
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label> تعليمات اخري </label>
+                                            <textarea name="other" cols="3" rows="3" class="form-control" disabled>{{ $comment->other }}</textarea>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-8">
@@ -64,10 +86,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 @endsection
 @section('script')
     @if (Session::has('success'))

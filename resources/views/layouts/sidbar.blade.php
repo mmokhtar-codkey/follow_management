@@ -129,7 +129,7 @@
             <ul class="sidebar-menu">
                 <li class="menu-header">
                 </li>
-                <li class="dropdown" style="background-color: #ff9147;">
+                <li class="dropdown" style="background-color: #40a12d;">
                     <a href="{{ route('calendar') }}" class="nav-link"><span>  الأجندة السيد المخافظ</span><i
                             data-feather="monitor"></i></a>
                 </li>
@@ -142,6 +142,13 @@
                                 <li><a class="nav-link" href="{{ route('noteVice.index') }}" style="color: black"> الكل  </a></li>
                                 <li><a class="nav-link" href="{{ route('noteVice') }}" style="color: black"> اضافة  </a></li>
                             </ul>
+                </li>
+                <li class="menu-header">
+                </li>
+                <li class="dropdown" style="background-color: #ff4747;">
+                    <a href="{{ route('noteVice.index') }}" class="nav-link"><span>  تعليمات السيد المحافظ </span><i
+                            data-feather="monitor"></i></a>
+
                 </li>
             </ul>
         @endif

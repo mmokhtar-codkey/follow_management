@@ -7,8 +7,12 @@ use App\Http\Requests\MediaViceRequest;
 use App\Http\Requests\StorePostaRequest;
 use App\Models\International;
 use App\Models\Media;
+use App\Models\Media_Vice_Comment;
+use App\Models\Nation_Category;
+use App\Models\Nation_Vice_Comment;
 use App\Models\Note;
 use App\Models\Note_Category;
+use App\Models\Note_Vice_Comment;
 use Illuminate\Http\Request;
 use App\Models\Vice_signatur;
 use Carbon\Carbon;
@@ -24,6 +28,11 @@ class SignatureController extends Controller
         $sign = Vice_signatur::select()->get();
         return view('signature.signature-pad', compact('sign'));
     }
+
+    /*------------------
+     * Vice Note
+     * ----------------
+     */
     public function noteVice()
     {
         $cat_note = Note_Category::select()->get();
@@ -32,9 +41,9 @@ class SignatureController extends Controller
     public function viewnoteVice()
     {
         //
-        $cat_note =Note_Category::select()->get();
-        $note =Note:: select()->get();
-        return view('posta.vice.show.shownote',compact('note','cat_note'));
+        $cat_note = Note_Category::select()->get();
+        $note = Note::select()->get();
+        return view('posta.vice.show.shownote', compact('note', 'cat_note'));
     }
     public function noteViceCreate(MediaViceRequest $request)
     {
@@ -73,21 +82,20 @@ class SignatureController extends Controller
     public function shownoteVice(string $id)
     {
         //
-
+        $vice_comment = Note_Vice_Comment::select()->where('note_id',$id)->get();
         $note = Note::select()->where('id', $id)->find($id);
-        return view('posta.vice.viewnote', compact('note'));
+        return view('posta.vice.viewnote', compact('note','vice_comment'));
     }
     public function catviewnoteVice(string $id)
     {
         //
-        $cat_note =Note_Category::select()->where('id', $id)->find($id);
+        $cat_note = Note_Category::select()->where('id', $id)->find($id);
         $note = Note::select()->where('ncategory_id', $id)->get();
-        return view('posta.vice.show.allnotes', compact('note','cat_note'));
+        return view('posta.vice.show.allnotes', compact('note', 'cat_note'));
     }
     public function noteCategoryCreate(Request $request)
     {
         //
-
         try {
 
             Note_Category::create([
@@ -102,16 +110,92 @@ class SignatureController extends Controller
                 ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
         }
     }
+    public function notedestroy(string $id)
+    {
+        //
+        try {
+            $signs = Note::find($id);
+            if (!$signs) {
+                return redirect()
+                    ->back()
+                    ->with(['error' => 'هذه الموضوع غير موجوده']);
+            }
+            $signs->forcedelete();
+
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم الحذف  بنجاح']);
+        } catch (\Exception $ex) {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+    /*------------------
+     * Vice Note_Comment
+     * ----------------
+     */
+    public function NoteComment_create(Request $request)
+    {
+        try {
+            Note_Vice_Comment::create([
+                'comment' => $request['comment'],
+                'other' => $request['other'],
+                'note_id' => $request['note_id'],
+            ]);
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم حفظ التعليمات بنجاح']);
+        }
+        catch (\Exception $ex)
+        {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+
+    /*------------------
+     * Vice Nation
+     * ----------------
+     */
+    public function nationCategoryCreate(Request $request)
+    {
+        //
+        try {
+
+            Nation_Category::create([
+                'name' => $request['name'],
+            ]);
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم حفظ النوتة بنجاح']);
+        } catch (\Exception $ex) {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+    public function catviewNationVice(string $id)
+    {
+        //
+        $cat_nation = Nation_Category::select()->where('id', $id)->find($id);
+        $nation = International::select()->where('ncategory_id', $id)->get();
+        return view('posta.vice.show.allnation', compact('nation', 'cat_nation'));
+    }
     public function nationVice()
     {
         //
-        return view('posta.vice.nation');
+        $cat_nation = Nation_Category::select()->get();
+        return view('posta.vice.nation',compact('cat_nation'));
     }
     public function viewnationVice()
     {
         //
+        $cat_nation = Nation_Category::select()->get();
         $nation = International::select()->get();
-        return view('posta.vice.show.shownation', compact('nation'));
+        return view('posta.vice.show.shownation', compact('nation', 'cat_nation'));
+
     }
     public function nationViceCreate(MediaViceRequest $request)
     {
@@ -135,6 +219,7 @@ class SignatureController extends Controller
                 'description' => $request['description'],
                 'date' => $request['date'],
                 'side_id' => $request['side_id'],
+                'ncategory_id' => $request['ncategory_id'],
                 'attach' => implode('|', $upload),
 
             ]);
@@ -150,9 +235,59 @@ class SignatureController extends Controller
     public function shownationVice(string $id)
     {
         //
+        $vice_comment = Nation_Vice_Comment::select()->where('nation_id',$id)->get();
         $nation = International::select()->where('id', $id)->find($id);
-        return view('posta.vice.viewnation', compact('nation'));
+        return view('posta.vice.viewnation', compact('nation','vice_comment'));
     }
+    public function nationdestroy(string $id)
+    {
+        //
+        try {
+            $signs = International::find($id);
+            if (!$signs) {
+                return redirect()
+                    ->back()
+                    ->with(['error' => 'هذه الموضوع غير موجوده']);
+            }
+            $signs->forcedelete();
+
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم الحذف  بنجاح']);
+        } catch (\Exception $ex) {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+    /*------------------
+     * Vice Nation_Comment
+     * ----------------
+    */
+    public function NationComment_create(Request $request)
+    {
+        try {
+            Nation_Vice_Comment::create([
+                'comment' => $request['comment'],
+                'other' => $request['other'],
+                'nation_id' => $request['nation_id'],
+            ]);
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم حفظ التعليمات بنجاح']);
+        }
+        catch (\Exception $ex)
+        {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+
+    /*------------------
+     * Vice Media
+     * ----------------
+    */
     public function mediaVice()
     {
         //
@@ -204,9 +339,54 @@ class SignatureController extends Controller
         $media = Media::select()->where('id', $id)->find($id);
         return view('posta.vice.viewmedia', compact('media'));
     }
+    public function mediadestroy(string $id)
+    {
+        //
+        try {
+            $signs = Media::find($id);
+            if (!$signs) {
+                return redirect()
+                    ->back()
+                    ->with(['error' => 'هذه الموضوع غير موجوده']);
+            }
+            $signs->forcedelete();
 
-    /**
-     * Store a newly created resource in storage.
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم  الحذف بنجاح']);
+        } catch (\Exception $ex) {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+    /*------------------
+     * Vice Nation_comment
+     * ----------------
+     */
+    public function MediaComment_create(Request $request)
+    {
+        try {
+            Media_Vice_Comment::create([
+                'comment' => $request['comment'],
+                'other' => $request['other'],
+                'media_id' => $request['media_id'],
+            ]);
+            return redirect()
+                ->back()
+                ->with(['success' => 'تم حفظ التعليمات بنجاح']);
+        }
+        catch (\Exception $ex)
+        {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+
+    /*----------------------
+     * توقيع السيد المحافظ
+     * ---------------------
      */
     public function store(Request $request)
     {
@@ -234,34 +414,6 @@ class SignatureController extends Controller
 
         return back()->with('success', ' تم حفظ التوقيع الإلكتروني بنجاح ');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
@@ -277,69 +429,6 @@ class SignatureController extends Controller
             return redirect()
                 ->back()
                 ->with(['success' => 'تم حذف التوقيع بنجاح']);
-        } catch (\Exception $ex) {
-            return redirect()
-                ->back()
-                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
-        }
-    }
-    public function notedestroy(string $id)
-    {
-        //
-        try {
-            $signs = Note::find($id);
-            if (!$signs) {
-                return redirect()
-                    ->back()
-                    ->with(['error' => 'هذه الموضوع غير موجوده']);
-            }
-            $signs->forcedelete();
-
-            return redirect()
-                ->back()
-                ->with(['success' => 'تم الحذف  بنجاح']);
-        } catch (\Exception $ex) {
-            return redirect()
-                ->back()
-                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
-        }
-    }
-    public function mediadestroy(string $id)
-    {
-        //
-        try {
-            $signs = Media::find($id);
-            if (!$signs) {
-                return redirect()
-                    ->back()
-                    ->with(['error' => 'هذه الموضوع غير موجوده']);
-            }
-            $signs->forcedelete();
-
-            return redirect()
-                ->back()
-                ->with(['success' => 'تم  الحذف بنجاح']);
-        } catch (\Exception $ex) {
-            return redirect()
-                ->back()
-                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
-        }
-    }
-    public function nationdestroy(string $id)
-    {
-        //
-        try {
-            $signs = International::find($id);
-            if (!$signs) {
-                return redirect()
-                    ->back()
-                    ->with(['error' => 'هذه الموضوع غير موجوده']);
-            }
-            $signs->forcedelete();
-
-            return redirect()
-                ->back()
-                ->with(['success' => 'تم الحذف  بنجاح']);
         } catch (\Exception $ex) {
             return redirect()
                 ->back()

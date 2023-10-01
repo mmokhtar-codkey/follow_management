@@ -13,24 +13,26 @@
                         <h4> تعليمات سيادة المحافظ </h4>
                     </div>
                     <div class="card-body" style="direction: rtl">
-                        <form action="">
+                        <form class="needs-validation" action="{{ route('vicecommnt_media.create') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
                             <div class="form-row">
+                                <input type="text" value="{{ $media->id }}" name="media_id" hidden>
                                 <div class="form-group col-md-12">
                                     <label> تعليمات معالي الوزير / المحافظ</label>
-                                    <select class="form-control select2" id="project" name="responsible_export_id"
+                                    <select class="form-control select2" id="project" name="comment"
                                         style="width: 100%;">
                                         <option value="" disabled selected> اختر من التعليمات
                                         </option>
-                                        <option value=""> تصديق </option>
-                                        <option value=""> إرسال للجهات الخرجية </option>
-                                        <option value=""> إعتذار </option>
+                                        <option value="تصديق"> تصديق </option>
+                                        <option value="إرسال للجهات الخرجية "> إرسال للجهات الخرجية </option>
+                                        <option value="إعتذار "> إعتذار </option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label> تعليمات اخري </label>
-                                    <textarea name="" cols="3" rows="3" class="form-control"></textarea>
+                                    <textarea name="other" cols="3" rows="3" class="form-control"></textarea>
                                 </div>
-
                             </div>
                             <button type="submit" class="btn btn-primary" style="float: right;">حفظ</button>
                         </form>

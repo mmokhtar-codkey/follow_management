@@ -24,11 +24,14 @@
 
     <link rel="stylesheet" href="assets/css/custom.css">
     <link rel='shortcut icon' type='image/x-icon' href='images/logo/aswan.png' />
-    {{-- <style>
-        #import_vice_done {
+    <style>
+        #nation2 {
             display: none;
         }
-    </style> --}}
+        #nation1 {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="light theme-white dark-sidebar sidebar-gone">
@@ -45,99 +48,31 @@
                                 <div class="card card-secondary"
                                     style="border-right: 63px solid #ffa426;border-top:0px;">
                                     <div class="card-header">
-                                        <h4> كل ملفات البريد الوارد </h4>
+                                        <h4>  ادارة التعاون الدولي </h4>
                                         <div class="card-header-action">
                                             <a href="{{ route('home') }}" class="btn btn-primary">الرئيسية</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="section-body">
-                                    <div class="row ">
-                                    </div>
-                                </div>
-                                <div class="card card-secondary">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <ul class="nav nav-pills">
+                                    <div class="row " style="direction: rtl">
+                                        @isset($cat_nation)
+                                            @foreach ($cat_nation as $cat)
+                                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="card" >
+                                                        <div class="card-statistic-4">
+                                                            <div class="align-items-right justify-content-between">
+                                                                <a class="nav-link" href="{{ route('nationSingle.show', $cat->id) }}"
+                                                                    style="font-size: 20px;color: #000000;font-weight: 600;"><span
+                                                                    class="badge badge-primary" style="padding: 4px 10px;font-size: 18px;border-radius: 4px;">{{ $cat->nation->count() }}</span>
+                                                                    {{ $cat->name }} </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endisset
 
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"
-                                                        style="font-size: 20px;font-weight: 600;">
-                                                        الخطابات <span class="badge badge-primary">3</span></a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"
-                                                        style="font-size: 20px;font-weight: 600;">
-                                                        رد الجهات الخارجية <span class="badge badge-primary">3</span></a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"
-                                                        style="font-size: 20px;font-weight: 600;">
-                                                          تحديد ميعاد للزيارة <span class="badge badge-primary">3</span></a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"
-                                                        style="font-size: 20px;font-weight: 600;">
-                                                            المعلومات <span class="badge badge-primary">3</span></a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="" style="padding-top: 15px;padding-bottom: 15px;direction:rtl">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-hover"
-                                                id="table-2"style="width:100%;">
-                                                <thead style="background-color: #26557c;">
-                                                    <tr>
-                                                        <th style="color: white" style="width: 5%"> # </th>
-                                                        {{-- <th style="color: white"> ت : البريد </th> --}}
-                                                        <th style="color: white"> العنوان </th>
-                                                        <th style="color: white"> بشــــــــــــــــــــــــــــــــــأن
-                                                        </th>
-                                                        <th style="color: white"> التاريخ </th>
-                                                        @if (auth()->user()->hasRole('vice_nation'))
-                                                            <th style="color: white"> تفاصيل </th>
-                                                        @endif
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="background-color: #437dad59;">
-                                                    @isset($nation)
-                                                        @foreach ($nation as $num => $GS)
-                                                            <tr>
-                                                                <td class="text-bold-700" style="width: 5%">
-                                                                    {{ $num + 1 }}</td>
-
-                                                                <td class="text-bold text-bold-400"
-                                                                    style="color: #000086;width: 15%" >
-                                                                    <a href="{{ route('nationVice.show', $GS->id) }}">{{ $GS->title }}</a>
-                                                                    </td>
-
-                                                                <td class="text-bold text-bold-700">
-                                                                    <a href="{{ route('nationVice.show', $GS->id) }}"
-                                                                        >{{ $GS->description }}</a>
-                                                                </td>
-                                                                <td style="width: 15%">
-                                                                    {{ $GS->date }}
-
-                                                                </td>
-                                                                @if (auth()->user()->hasRole('vice_nation'))
-                                                                    <td style="width: 10%">
-                                                                        <a href="{{ route('nation.delete', $GS->id) }}"
-                                                                            class="col-dark-gray waves-effect m-r-20"
-                                                                            title="" data-toggle="tooltip"
-                                                                            data-original-title=" حذف ">
-                                                                            <i class="material-icons">delete</i>
-                                                                        </a>
-
-                                                                    </td>
-                                                                @endif
-                                                            </tr>
-                                                        @endforeach
-                                                    @endisset
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -168,27 +103,29 @@
         </script>
     @endif
     <script>
-        $(".nav-item > a").click(function() { // when clicking any of these links
-            $(".nav-item > a").removeClass("active"); // remove highlight from all links
-            $(this).addClass("nav-link active"); // add highlight to clicked link
-        })
         $(document).ready(function() {
             $('table.table').DataTable();
         });
     </script>
     <!-- Custom JS File -->
     <script src="assets/js/custom.js"></script>
-    {{-- <script>
+    <script>
+        $(".nav-item > a").click(function() { // when clicking any of these links
+            $(".nav-item > a").removeClass("active"); // remove highlight from all links
+            $(this).addClass("nav-link active"); // add highlight to clicked link
+        })
+
         function myFunction() {
-            document.getElementById("import_vice_done").style.display = "none";
-            document.getElementById("import_vice_nondone").style.display = "block";
+            document.getElementById("nation2").style.display = "none";
+            document.getElementById("nation1").style.display = "block";
+
         }
 
         function myFunction2() {
-            document.getElementById("import_vice_done").style.display = "block";
-            document.getElementById("import_vice_nondone").style.display = "none";
+            document.getElementById("nation2").style.display = "block";
+            document.getElementById("nation1").style.display = "none";
         }
-    </script> --}}
+    </script>
 </body>
 
 

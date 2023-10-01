@@ -6,6 +6,7 @@ use App\Models\Export;
 use App\Models\Topic;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\Responsible;
 use App\Models\Side_brach;
 use Illuminate\Http\Request;
 
@@ -67,6 +68,20 @@ class SideController extends Controller
             $side = Side::create(([
                 'side_name' => $request['side_name'],
                 //'side_image' => $imageName,
+            ]));
+            return redirect()->back()->with(['success' => 'تم حفظ الجهة']);
+        } catch (\Exception $ex) {
+            return redirect()->back()->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
+    }
+    public function Mstore(Request $request)
+    {
+        //
+        try {
+
+            $side = Responsible::create(([
+                'name' => $request['name'],
+                
             ]));
             return redirect()->back()->with(['success' => 'تم حفظ الجهة']);
         } catch (\Exception $ex) {

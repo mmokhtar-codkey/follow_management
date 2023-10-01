@@ -102,14 +102,6 @@ class BostaController extends Controller
         $side = Bosta::select()->where('governor_signature_id', $id)->get();
         return view('posta.view_pdf', compact('Gsignatur', 'Gsign', 'side', 'responsibles', 'sign'));
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -202,7 +194,7 @@ class BostaController extends Controller
     public function destroy(string $id)
     {
         //
-        // try {
+        try {
             $Gsignatur = Governor_signatur::find($id);
             $bosta =Bosta:: where('governor_signature_id',$id)->delete('governor_signature_id');
             if (!$Gsignatur) {
@@ -215,10 +207,10 @@ class BostaController extends Controller
             return redirect()
                 ->back()
                 ->with(['success' => 'تم حذف التأشيرة بنجاح']);
-        // } catch (\Exception $ex) {
-        //     return redirect()
-        //         ->back()
-        //         ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
-        // }
+        } catch (\Exception $ex) {
+            return redirect()
+                ->back()
+                ->with(['error' => 'هناك خطا ما يرجي المحاوله فيما بعد']);
+        }
     }
 }

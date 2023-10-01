@@ -112,6 +112,9 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <label> الجهات المعنية </label>
+                                                    <button type="button" class="btn-success" data-toggle="modal"
+                                                        data-target="#exampleModal1"
+                                                        style="float: left;margin-bottom: 5px;"> الجهات معنية جديدة </button>
                                                     <select class="form-control select2" name="side_mean[]" multiple
                                                         style="width: 100%;" required>
                                                         <option value="" disabled> الإدارة المسؤلة للمتابعة
@@ -171,6 +174,37 @@
                                 </div>
                             </div>
 
+                            <div class="text-left">
+                                <button class="btn btn-primary" type="submit">حفظ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="formModal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="card-header primary">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            style="float:left">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4> اضافة جهة معنية جديدة </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="needs-validation" novalidate="" action="{{ route('M.store') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label> اسم الجهة المعنية </label>
+                                    <input style="height: calc(2.25rem + 6px);" type="text" name="name"
+                                        class="form-control">
+                                </div>
+                            </div>
                             <div class="text-left">
                                 <button class="btn btn-primary" type="submit">حفظ</button>
                             </div>

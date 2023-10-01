@@ -4,71 +4,91 @@
     <link rel="stylesheet" href="assets/bundles/owlcarousel2/dist/assets/owl.theme.default.min.css">
 @endsection
 @section('content')
-<div class="section-body">
-    <div class="row">
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4> تعليمات سيادة المحافظ </h4>
-                </div>
-                <div class="card-body" style="direction: rtl">
-                    <form action="">
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label> تعليمات معالي الوزير / المحافظ</label>
-                                <select class="form-control select2" id="project" name="responsible_export_id"
-                                    style="width: 100%;">
-                                    <option value="" disabled selected> اختر من التعليمات
-                                    </option>
-                                    <option value=""> تصديق </option>
-                                    <option value=""> إرسال للجهات الخرجية </option>
-                                    <option value=""> إعتذار </option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label> تعليمات اخري </label>
-                                <textarea name="" cols="3" rows="3" class="form-control"></textarea>
-                            </div>
-
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="float: right;">حفظ</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-8">
-            <div class="card card-secondary">
-                <div class="card-header">
-                    <h4> {{ $note->title }} </h4>
-                </div>
-                <div class="card-body">
-                    <span class="date pull-left">تاريخ : {{ $note->date }}</span>
-                    <h4 style="color: #000;"> {{ $note->description }} : بشأن </h5>
-                </div>
-            </div>
-            <div class="card card-secondary">
-                <div class="card-body">
-                    <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
-                        @isset($note)
-                            @foreach (explode('|', $note->attach) as $file)
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="{{ URL::to('vice/note/' . $file) }}" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="{{ URL::to('vice/note/' . $file) }}"
-                                            alt="" style="width: 100%;
-                                            height: 85%; border-radius: 5px;">
-                                    </a>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4> تعليمات سيادة المحافظ </h4>
+                    </div>
+                    @if (auth()->user()->hasRole('vice'))
+                        <div class="card-body" style="direction: rtl">
+                            <form class="needs-validation" action="{{ route('vicecommnt.create') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-row">
+                                    <input type="text" value="{{ $note->id }}" name="note_id" hidden>
+                                    <div class="form-group col-md-12">
+                                        <label> تعليمات معالي الوزير / المحافظ</label>
+                                        <select class="form-control select2" id="project" name="comment"
+                                            style="width: 100%;">
+                                            <option value="" disabled selected> اختر من التعليمات
+                                            </option>
+                                            <option value="تصديق"> تصديق </option>
+                                            <option value="إرسال للجهات الخرجية "> إرسال للجهات الخرجية </option>
+                                            <option value="إعتذار "> إعتذار </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label> تعليمات اخري </label>
+                                        <textarea name="other" cols="3" rows="3" class="form-control"></textarea>
+                                    </div>
                                 </div>
-                            @endforeach
-                        @endisset
+                                <button type="submit" class="btn btn-primary" style="float: right;">حفظ</button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="card-body" style="direction: rtl">
+                            @isset($vice_comment)
+                                @foreach ($vice_comment as $comment)
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label> تعليمات معالي الوزير / المحافظ</label>
+                                            <input style="height: calc(2.25rem + 6px);" type="text"
+                                                value="{{ $comment->comment }}" class="form-control" disabled />
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label> تعليمات اخري </label>
+                                            <textarea name="other" cols="3" rows="3" class="form-control" disabled>{{ $comment->other }}</textarea>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
+                    @endif
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-8">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h4> {{ $note->title }} </h4>
+                    </div>
+                    <div class="card-body">
+                        <span class="date pull-left">تاريخ : {{ $note->date }}</span>
+                        <h4 style="color: #000;"> {{ $note->description }} : بشأن </h5>
+                    </div>
+                </div>
+                <div class="card card-secondary">
+                    <div class="card-body">
+                        <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
+                            @isset($note)
+                                @foreach (explode('|', $note->attach) as $file)
+                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                        <a href="{{ URL::to('vice/note/' . $file) }}" data-sub-html="Demo Description">
+                                            <img class="img-responsive thumbnail" src="{{ URL::to('vice/note/' . $file) }}"
+                                                alt=""
+                                                style="width: 100%;
+                                            height: 85%; border-radius: 5px;">
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-</div>
-
-
 @endsection
 @section('script')
     @if (Session::has('success'))

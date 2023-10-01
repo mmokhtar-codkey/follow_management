@@ -10,6 +10,6 @@ class Media extends Model
     use HasFactory;
 
     protected $table = 'media';
-    protected $fillable = ['id','title','description','date','attach'];
+    protected $fillable = ['id','title','description','date','attach','ncategory_id'];
     protected $hidden = ['created_at', 'updated_at','deleted_at'];
 }

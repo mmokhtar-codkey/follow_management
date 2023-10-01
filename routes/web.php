@@ -30,16 +30,30 @@ Route::group(['namespace'=> 'admin','middleware' => 'auth'],function (){
     Route::get('/singlenote{id}'           ,[App\Http\Controllers\Admin\SignatureController::class,'shownoteVice'])   -> name('noteVice.show');
     Route::post('/noteStore'           ,[App\Http\Controllers\Admin\SignatureController::class,'noteViceCreate'])   -> name('noteVice.create');
     Route::post('/catenoteStore'           ,[App\Http\Controllers\Admin\SignatureController::class,'noteCategoryCreate'])   -> name('CatNote.create');
+    Route::post('/note_comments'           ,[App\Http\Controllers\Admin\SignatureController::class,'NoteComment_create'])   -> name('vicecommnt.create');
+
+
+    ///////////////////////////////////////////// {Vice_Nation} ///////////////////////////////////////////
+
     Route::get('/nation'           ,[App\Http\Controllers\Admin\SignatureController::class,'nationVice'])   -> name('nationVice');
-    Route::get('/nation_delete/{id}'   ,[App\Http\Controllers\Admin\SignatureController::class    ,'nationdestroy'])  -> name('nation.delete');
     Route::get('/nationshow'           ,[App\Http\Controllers\Admin\SignatureController::class,'viewnationVice'])   -> name('nationVice.index');
+    Route::get('/nation_delete/{id}'   ,[App\Http\Controllers\Admin\SignatureController::class    ,'nationdestroy'])  -> name('nation.delete');
+    Route::get('/cat_nationshow{id}'           ,[App\Http\Controllers\Admin\SignatureController::class,'catviewNationVice'])   -> name('nationSingle.show');
     Route::get('/singlenation{id}'           ,[App\Http\Controllers\Admin\SignatureController::class,'shownationVice'])   -> name('nationVice.show');
     Route::post('/nationstore'           ,[App\Http\Controllers\Admin\SignatureController::class,'nationViceCreate'])   -> name('nationVice.create');
+    Route::post('/nation_comments'           ,[App\Http\Controllers\Admin\SignatureController::class,'NationComment_create'])   -> name('vicecommnt_nation.create');
+    Route::post('/catenationStore'           ,[App\Http\Controllers\Admin\SignatureController::class,'nationCategoryCreate'])   -> name('CatNation.create');
+
+
+        ///////////////////////////////////////////// {Vice_Media} ///////////////////////////////////////////
+
     Route::get('/media'           ,[App\Http\Controllers\Admin\SignatureController::class,'mediaVice'])   -> name('mediaVice');
     Route::get('/mediashow'           ,[App\Http\Controllers\Admin\SignatureController::class,'viewmediaVice'])   -> name('mediaVice.index');
     Route::get('/media_delete/{id}'   ,[App\Http\Controllers\Admin\SignatureController::class    ,'mediadestroy'])  -> name('media.delete');
     Route::get('/singlemedia{id}'           ,[App\Http\Controllers\Admin\SignatureController::class,'showmediaVice'])   -> name('mediaVice.show');
     Route::post('/mediastore'           ,[App\Http\Controllers\Admin\SignatureController::class,'mediaViceCreate'])   -> name('mediaVice.create');
+    Route::post('/media_comments'           ,[App\Http\Controllers\Admin\SignatureController::class,'MediaComment_create'])   -> name('vicecommnt_media.create');
+
 
 });
 ///////////////////////////////////////////// Bosta view ///////////////////////////////////////////
@@ -120,6 +134,7 @@ Route::group(['namespace'=> 'admin','middleware' => 'auth'],function (){
     Route::get('/side-create'             ,[App\Http\Controllers\Admin\SideController::class,'create'])-> name('side.create');
     Route::post('/side-store'             ,[App\Http\Controllers\Admin\SideController::class,'store']) -> name('side.store');
     Route::post('/store'                  ,[App\Http\Controllers\Admin\SideController::class,'Qstore'])-> name('q.store');
+    Route::post('/storeMange'                  ,[App\Http\Controllers\Admin\SideController::class,'Mstore'])-> name('M.store');
     Route::get('/side-edit{id}'           ,[App\Http\Controllers\Admin\SideController::class,'edit'])  -> name('side.edit');
     Route::post('/side-update{id}'        ,[App\Http\Controllers\Admin\SideController::class,'update'])-> name('side.update');
 
